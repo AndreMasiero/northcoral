@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>North Coral</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="apple-touch-icon" href="/img/icon.png">
+    
+    <style>
+        /* Estética Minimalista All-Black */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #171717;
+            --border-color: #2a2a2a;
+            --text-primary: #ededed;
+            --text-secondary: #a0a0a0;
+            --accent: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color); /* Mantém a cor escura como fallback */
+            
+            /* Adicione estas linhas abaixo para o background: */
+            background-image: url('./img/bg.png');
+            background-size: cover; /* Faz a imagem cobrir a tela toda */
+            background-position: center; /* Centraliza a imagem */
+            background-attachment: fixed; /* Deixa o fundo parado enquanto a tela rola */
+            
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* No seu arquivo CSS */
+
+        .container {
+            width: 120%;
+            max-width: 480px;
+            min-height: 100vh;
+            /* Aumente o padding superior para empurrar o conteúdo para baixo */
+            padding: 240px 20px 24px 20px; /* Valor alterado de 24px para 140px */
+            display: flex;
+            flex-direction: column;
+            /* Garante que o padding não afete a largura total */
+            box-sizing: border-box; 
+            /* Opcional: se quiser centralizar o conteúdo na tela */
+            margin: 0 auto; 
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Card de Aviso */
+        .alert-card {
+            background-color: rgba(23, 23, 23, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .alert-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .alert-card strong {
+            display: block;
+            color: var(--accent);
+            font-size: 18px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Botões e Links */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background-color: rgba(23, 23, 23, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            text-decoration: none;
+        }
+
+        .btn:active {
+            background-color: #222;
+            transform: scale(0.98);
+        }
+
+        .btn-icon {
+            opacity: 0.5;
+            font-size: 20px;
+        }
+
+        /* Views (Telas) */
+        .view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="alert-card">
+            <p>Para o dia 14/03 ensaiar a música:</p>
+            <strong>Intensamente</strong>
+        </div>
+
+        <main id="view-home" class="view active">
+            <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">Selecione seu naipe</h2>
+            <button class="btn" onclick="selectVoice('soprano')">
+                Soprano <span class="btn-icon">›</span>
+            </button>
+            <button class="btn" onclick="selectVoice('contralto')">
+                Contralto <span class="btn-icon">›</span>
+            </button>
+            <button class="btn" onclick="selectVoice('tenor')">
+                Tenor <span class="btn-icon">›</span>
+            </button>
+            <button class="btn" onclick="selectVoice('baritono')">
+                Barítono <span class="btn-icon">›</span>
+            </button>
+        </main>
+
+        <main id="view-songs" class="view">
+            <button class="back-btn" onclick="goHome()">
+                <span>‹</span> Trocar Naipe
+            </button>
+            <h2 id="voice-title" class="section-title">Naipe</h2>
+            
+            <div id="songs-list">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        // Banco de dados com os links originais do Drive
+        const database = {
+            soprano: [
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1WT2v9Ob0rhQtHOJykNlTRxLsNVUuBHWv/view?usp=drivesdk" },
+                { title: "Sonda-me", url: "https://drive.google.com/file/d/1Cp17KF4oIia8W5SVzjJkXYBsZ12i8YWW/view?usp=sharing" },
+                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1faQF46dhJCCcLnIdH3fNt0mdqK3_79P1/view?usp=sharing" },
+                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1b2YF7dueL4HJerLiIpgy3EgOqWhXu1aW/view?usp=sharing" }
+            ],
+            contralto: [
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1-GRBHTnwIX04Qv9qIF6fy0U4lPxrF09S/view?usp=drivesdk" },
+                { title: "Sonda-me", url: "https://drive.google.com/file/d/1sFgJpSZc6zrbejrrI49h3cA7yAJSnsBB/view?usp=sharing" },
+                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1eO26NmeZ-ArztCRz4w7nDAaeG3dYodkz/view?usp=sharing" },
+                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/146djlT1Tm4z46sdqH1eUNzG2hXXNQIZB/view?usp=sharing" }
+            ],
+            tenor: [
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1kfqkcaWLRASJT3bZfXtR2AGAvthgOHCp/view?usp=drivesdk" },
+                { title: "Sonda-me", url: "https://drive.google.com/file/d/1YwC09_rCz44aF_kjnTA38U5H0c2HPZVs/view?usp=sharing" },
+                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1IYQA5fhbkBG0cbg1ScXMJpdck-d_z9mO/view?usp=sharing" },
+                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1kfqkcaWLRASJT3bZfXtR2AGAvthgOHCp/view?usp=drivesdk" }
+            ],
+            baritono: [
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1OH2VPQdeviYwyFirxwBWCaRDfVMo1huX/view?usp=drivesdk" },
+                { title: "Sonda-me", url: "https://drive.google.com/file/d/1bPFibLPwI04Min68AzSlj9gUuJYIWzNR/view?usp=sharing" },
+                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1ovgxSTnLR2dFyYUrQA__7YAqfx2Ofquw/view?usp=sharing" },
+                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1hm-nPMq6w37zGRlyX51Uul57juaxRNf_/view?usp=sharing" }
+            ]
+        };
+
+        const viewHome = document.getElementById('view-home');
+        const viewSongs = document.getElementById('view-songs');
+        const songsList = document.getElementById('songs-list');
+        const voiceTitle = document.getElementById('voice-title');
+
+        window.onload = () => {
+            const savedVoice = localStorage.getItem('userVoice');
+            if (savedVoice && database[savedVoice]) {
+                selectVoice(savedVoice);
+            }
+        };
+
+        function selectVoice(voiceKey) {
+            localStorage.setItem('userVoice', voiceKey);
+            voiceTitle.textContent = voiceKey.charAt(0).toUpperCase() + voiceKey.slice(1);
+            
+            songsList.innerHTML = '';
+            database[voiceKey].forEach(song => {
+                const a = document.createElement('a');
+                a.href = song.url;
+                a.className = 'btn';
+                a.target = '_blank'; // Abre o link em uma nova aba
+                a.innerHTML = `🎵 ${song.title} <span class="btn-icon">↗</span>`;
+                songsList.appendChild(a);
+            });
+
+            viewHome.classList.remove('active');
+            viewSongs.classList.add('active');
+        }
+
+        function goHome() {
+            localStorage.removeItem('userVoice');
+            viewSongs.classList.remove('active');
+            viewHome.classList.add('active');
+        }
+
+        // --- Registro do Service Worker para o PWA ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('Service Worker registrado com sucesso!', reg);
+                }).catch(err => {
+                    console.log('Falha ao registrar o Service Worker', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
