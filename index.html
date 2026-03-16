@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,7 +8,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a0a0a">
     <link rel="apple-touch-icon" href="/img/icon.png">
-    
+
     <style>
         /* Estética Minimalista All-Black */
         :root {
@@ -28,14 +29,18 @@
         }
 
         body {
-            background-color: var(--bg-color); /* Mantém a cor escura como fallback */
-            
+            background-color: var(--bg-color);
+            /* Mantém a cor escura como fallback */
+
             /* Adicione estas linhas abaixo para o background: */
             background-image: url('./img/bg.png');
-            background-size: cover; /* Faz a imagem cobrir a tela toda */
-            background-position: center; /* Centraliza a imagem */
-            background-attachment: fixed; /* Deixa o fundo parado enquanto a tela rola */
-            
+            background-size: cover;
+            /* Faz a imagem cobrir a tela toda */
+            background-position: center;
+            /* Centraliza a imagem */
+            background-attachment: fixed;
+            /* Deixa o fundo parado enquanto a tela rola */
+
             color: var(--text-primary);
             display: flex;
             justify-content: center;
@@ -48,13 +53,14 @@
             max-width: 480px;
             min-height: 100vh;
             /* Aumente o padding superior para empurrar o conteúdo para baixo */
-            padding: 240px 20px 24px 20px; /* Valor alterado de 24px para 140px */
+            padding: 240px 20px 24px 20px;
+            /* Valor alterado de 24px para 140px */
             display: flex;
             flex-direction: column;
             /* Garante que o padding não afete a largura total */
-            box-sizing: border-box; 
+            box-sizing: border-box;
             /* Opcional: se quiser centralizar o conteúdo na tela */
-            margin: 0 auto; 
+            margin: 0 auto;
         }
 
         header {
@@ -151,22 +157,31 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
 
         <div class="alert-card">
-            <p>Para o dia 14/03 ensaiar a música:</p>
+            <p>Para o dia 21/03 ensaiar a música:</p>
             <strong>Intensamente</strong>
         </div>
 
         <main id="view-home" class="view active">
-            <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">Selecione seu naipe</h2>
+            <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">
+                Selecione seu naipe</h2>
             <button class="btn" onclick="selectVoice('soprano')">
                 Soprano <span class="btn-icon">›</span>
             </button>
@@ -186,9 +201,9 @@
                 <span>‹‹‹‹‹</span> Trocar Naipe
             </button>
             <h2 id="voice-title" class="section-title">Naipe</h2>
-            
+
             <div id="songs-list">
-                </div>
+            </div>
         </main>
     </div>
 
@@ -202,13 +217,13 @@
                 { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1b2YF7dueL4HJerLiIpgy3EgOqWhXu1aW/view?usp=sharing" }
             ],
             contralto: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1-GRBHTnwIX04Qv9qIF6fy0U4lPxrF09S/view?usp=drivesdk" },
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1z2Bm6allDhA_gUf2yGlLylejLyN0FpDn/view?usp=drivesdk" },
                 { title: "Sonda-me", url: "https://drive.google.com/file/d/1sFgJpSZc6zrbejrrI49h3cA7yAJSnsBB/view?usp=sharing" },
                 { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1eO26NmeZ-ArztCRz4w7nDAaeG3dYodkz/view?usp=sharing" },
                 { title: "Eu vou chegar", url: "https://drive.google.com/file/d/146djlT1Tm4z46sdqH1eUNzG2hXXNQIZB/view?usp=sharing" }
             ],
             tenor: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1kfqkcaWLRASJT3bZfXtR2AGAvthgOHCp/view?usp=drivesdk" },
+                { title: "Intensamente", url: "https://drive.google.com/file/d/1kHvRojL-WAJFyhPU-UlH6B7NQ0ORXZZC/view?usp=drivesdk" },
                 { title: "Sonda-me", url: "https://drive.google.com/file/d/1YwC09_rCz44aF_kjnTA38U5H0c2HPZVs/view?usp=sharing" },
                 { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1IYQA5fhbkBG0cbg1ScXMJpdck-d_z9mO/view?usp=sharing" },
                 { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1kfqkcaWLRASJT3bZfXtR2AGAvthgOHCp/view?usp=drivesdk" }
@@ -236,7 +251,7 @@
         function selectVoice(voiceKey) {
             localStorage.setItem('userVoice', voiceKey);
             voiceTitle.textContent = voiceKey.charAt(0).toUpperCase() + voiceKey.slice(1);
-            
+
             songsList.innerHTML = '';
             database[voiceKey].forEach(song => {
                 const a = document.createElement('a');
@@ -269,4 +284,5 @@
         }
     </script>
 </body>
+
 </html>
