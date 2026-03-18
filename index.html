@@ -174,26 +174,15 @@
 
     <div class="container">
 
-        <div class="alert-card">
-            <p>Para o dia 21/03 ensaiar as músicas:</p>
-            <strong>Intensamente e Sonda-me</strong>
+        <div class="alert-card" id="alert-card">
+            <p id="alert-text"></p>
+            <strong id="alert-songs"></strong>
         </div>
 
         <main id="view-home" class="view active">
             <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">
                 Selecione seu naipe</h2>
-            <button class="btn" onclick="selectVoice('soprano')">
-                Soprano <span class="btn-icon">›</span>
-            </button>
-            <button class="btn" onclick="selectVoice('contralto')">
-                Contralto <span class="btn-icon">›</span>
-            </button>
-            <button class="btn" onclick="selectVoice('tenor')">
-                Tenor <span class="btn-icon">›</span>
-            </button>
-            <button class="btn" onclick="selectVoice('baritono')">
-                Barítono <span class="btn-icon">›</span>
-            </button>
+            <div id="naipes-list"></div>
         </main>
 
         <main id="view-songs" class="view">
@@ -208,56 +197,55 @@
     </div>
 
     <script>
-        // Banco de dados com os links originais do Drive
-        const database = {
-            soprano: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1WT2v9Ob0rhQtHOJykNlTRxLsNVUuBHWv/view?usp=drivesdk" },
-                { title: "Sonda-me", url: "https://drive.google.com/file/d/1Cp17KF4oIia8W5SVzjJkXYBsZ12i8YWW/view?usp=sharing" },
-                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1faQF46dhJCCcLnIdH3fNt0mdqK3_79P1/view?usp=sharing" },
-                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1b2YF7dueL4HJerLiIpgy3EgOqWhXu1aW/view?usp=sharing" }
-            ],
-            contralto: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1z2Bm6allDhA_gUf2yGlLylejLyN0FpDn/view?usp=drivesdk" },
-                { title: "Sonda-me", url: "https://drive.google.com/file/d/1sFgJpSZc6zrbejrrI49h3cA7yAJSnsBB/view?usp=sharing" },
-                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1eO26NmeZ-ArztCRz4w7nDAaeG3dYodkz/view?usp=sharing" },
-                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/146djlT1Tm4z46sdqH1eUNzG2hXXNQIZB/view?usp=sharing" }
-            ],
-            tenor: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1kHvRojL-WAJFyhPU-UlH6B7NQ0ORXZZC/view?usp=drivesdk" },
-                { title: "Sonda-me", url: "https://drive.google.com/file/d/1YwC09_rCz44aF_kjnTA38U5H0c2HPZVs/view?usp=sharing" },
-                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1IYQA5fhbkBG0cbg1ScXMJpdck-d_z9mO/view?usp=sharing" },
-                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1I2SCE1VezUcMkTnXRGTvQyL-szxrfzzR/view?usp=sharing" }
-            ],
-            baritono: [
-                { title: "Intensamente", url: "https://drive.google.com/file/d/1nTWim7I7SNTVH5k6iPubgW-pATOtWk0p/view?usp=sharing" },
-                { title: "Sonda-me", url: "https://drive.google.com/file/d/1bPFibLPwI04Min68AzSlj9gUuJYIWzNR/view?usp=sharing" },
-                { title: "Bondade de Deus", url: "https://drive.google.com/file/d/1ovgxSTnLR2dFyYUrQA__7YAqfx2Ofquw/view?usp=sharing" },
-                { title: "Eu vou chegar", url: "https://drive.google.com/file/d/1hm-nPMq6w37zGRlyX51Uul57juaxRNf_/view?usp=sharing" }
-            ]
-        };
+        const DATA_URL = 'https://api.github.com/repos/AndreMasiero/northcoral/contents/data.json';
 
         const viewHome = document.getElementById('view-home');
         const viewSongs = document.getElementById('view-songs');
         const songsList = document.getElementById('songs-list');
         const voiceTitle = document.getElementById('voice-title');
+        const naipesList = document.getElementById('naipes-list');
 
-        window.onload = () => {
-            const savedVoice = localStorage.getItem('userVoice');
-            if (savedVoice && database[savedVoice]) {
-                selectVoice(savedVoice);
-            }
+        const naipeLabels = {
+            soprano: 'Soprano',
+            contralto: 'Contralto',
+            tenor: 'Tenor',
+            baritono: 'Barítono'
         };
 
-        function selectVoice(voiceKey) {
+        async function init() {
+            const meta = await fetch(DATA_URL, { cache: 'no-store' }).then(r => r.json());
+            const appData = JSON.parse(decodeURIComponent(escape(atob(meta.content))));
+
+            document.getElementById('alert-text').textContent = appData.data_ensaio;
+            document.getElementById('alert-songs').textContent = appData.musica_para_ensaiar;
+
+            naipesList.innerHTML = '';
+            Object.keys(appData.naipes).forEach(key => {
+                const label = naipeLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.innerHTML = `${label} <span class="btn-icon">›</span>`;
+                btn.onclick = () => selectVoice(appData, key);
+                naipesList.appendChild(btn);
+            });
+
+            const savedVoice = localStorage.getItem('userVoice');
+            if (savedVoice && appData.naipes[savedVoice]) {
+                selectVoice(appData, savedVoice);
+            }
+        }
+
+        function selectVoice(appData, voiceKey) {
             localStorage.setItem('userVoice', voiceKey);
-            voiceTitle.textContent = voiceKey.charAt(0).toUpperCase() + voiceKey.slice(1);
+            const label = naipeLabels[voiceKey] || voiceKey.charAt(0).toUpperCase() + voiceKey.slice(1);
+            voiceTitle.textContent = label;
 
             songsList.innerHTML = '';
-            database[voiceKey].forEach(song => {
+            appData.naipes[voiceKey].forEach(song => {
                 const a = document.createElement('a');
                 a.href = song.url;
                 a.className = 'btn';
-                a.target = '_blank'; // Abre o link em uma nova aba
+                a.target = '_blank';
                 a.innerHTML = `🎵 ${song.title} <span class="btn-icon">↗</span>`;
                 songsList.appendChild(a);
             });
@@ -271,6 +259,8 @@
             viewSongs.classList.remove('active');
             viewHome.classList.add('active');
         }
+
+        init();
 
         // --- Registro do Service Worker para o PWA ---
         if ('serviceWorker' in navigator) {
