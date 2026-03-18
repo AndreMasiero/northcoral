@@ -1,0 +1,110 @@
+{
+  "data_ensaio": "Para o dia 21/03 ensaiar as músicas:",
+  "musica_para_ensaiar": "Intensamente e Sonda-me",
+  "naipes": {
+    "soprano": [
+      {
+        "title": "Intensamente",
+        "url": "https://drive.google.com/file/d/1WT2v9Ob0rhQtHOJykNlTRxLsNVUuBHWv/view?usp=drivesdk"
+      },
+      {
+        "title": "Sonda-me",
+        "url": "https://drive.google.com/file/d/1Cp17KF4oIia8W5SVzjJkXYBsZ12i8YWW/view?usp=sharing"
+      },
+      {
+        "title": "Bondade de Deus",
+        "url": "https://drive.google.com/file/d/1faQF46dhJCCcLnIdH3fNt0mdqK3_79P1/view?usp=sharing"
+      },
+      {
+        "title": "Eu vou chegar",
+        "url": "https://drive.google.com/file/d/1b2YF7dueL4HJerLiIpgy3EgOqWhXu1aW/view?usp=sharing"
+      },
+      {
+        "title": "Em Teus Braços",
+        "url": "https://drive.google.com/file/d/1cKPbKfk23CRIK6juNuasenZiaCjQlfXg/view?usp=sharing"
+      },
+      {
+        "title": "Eu Me Rendo",
+        "url": "https://drive.google.com/file/d/14RzkWGm26HVoBHI3hGrhFmvW6t4wh5Pg/view?usp=sharing"
+      }
+    ],
+    "contralto": [
+      {
+        "title": "Intensamente",
+        "url": "https://drive.google.com/file/d/1z2Bm6allDhA_gUf2yGlLylejLyN0FpDn/view?usp=drivesdk"
+      },
+      {
+        "title": "Sonda-me",
+        "url": "https://drive.google.com/file/d/1sFgJpSZc6zrbejrrI49h3cA7yAJSnsBB/view?usp=sharing"
+      },
+      {
+        "title": "Bondade de Deus",
+        "url": "https://drive.google.com/file/d/1eO26NmeZ-ArztCRz4w7nDAaeG3dYodkz/view?usp=sharing"
+      },
+      {
+        "title": "Eu vou chegar",
+        "url": "https://drive.google.com/file/d/146djlT1Tm4z46sdqH1eUNzG2hXXNQIZB/view?usp=sharing"
+      },
+      {
+        "title": "Em Teus Braços",
+        "url": "https://drive.google.com/file/d/1BOrvYXqpXXFPevc4VlOwLws-ty-eqIjh/view?usp=sharing"
+      },
+      {
+        "title": "Eu Me Rendo",
+        "url": "https://drive.google.com/file/d/1_IFQjy52XnuFr5N4PqEbyB7ll40l3Z-P/view?usp=sharing"
+      }
+    ],
+    "tenor": [
+      {
+        "title": "Intensamente",
+        "url": "https://drive.google.com/file/d/1kHvRojL-WAJFyhPU-UlH6B7NQ0ORXZZC/view?usp=drivesdk"
+      },
+      {
+        "title": "Sonda-me",
+        "url": "https://drive.google.com/file/d/1YwC09_rCz44aF_kjnTA38U5H0c2HPZVs/view?usp=sharing"
+      },
+      {
+        "title": "Bondade de Deus",
+        "url": "https://drive.google.com/file/d/1IYQA5fhbkBG0cbg1ScXMJpdck-d_z9mO/view?usp=sharing"
+      },
+      {
+        "title": "Eu vou chegar",
+        "url": "https://drive.google.com/file/d/1I2SCE1VezUcMkTnXRGTvQyL-szxrfzzR/view?usp=sharing"
+      },
+      {
+        "title": "Em Teus Braços",
+        "url": "https://drive.google.com/file/d/1B9W9_TdBRR7K2U33LRFHD0AyaUmeu2nw/view?usp=sharing"
+      },
+      {
+        "title": "Eu Me Rendo",
+        "url": "https://drive.google.com/file/d/1ZcgHmFz_a7blMSNRrub5rLT7PzrNRoHg/view?usp=sharing"
+      }
+    ],
+    "baritono": [
+      {
+        "title": "Intensamente",
+        "url": "https://drive.google.com/file/d/1nTWim7I7SNTVH5k6iPubgW-pATOtWk0p/view?usp=sharing"
+      },
+      {
+        "title": "Sonda-me",
+        "url": "https://drive.google.com/file/d/1bPFibLPwI04Min68AzSlj9gUuJYIWzNR/view?usp=sharing"
+      },
+      {
+        "title": "Bondade de Deus",
+        "url": "https://drive.google.com/file/d/1ovgxSTnLR2dFyYUrQA__7YAqfx2Ofquw/view?usp=sharing"
+      },
+      {
+        "title": "Eu vou chegar",
+        "url": "https://drive.google.com/file/d/1hm-nPMq6w37zGRlyX51Uul57juaxRNf_/view?usp=sharing"
+      },
+      {
+        "title": "Em Teus Braços",
+        "url": "https://drive.google.com/file/d/11MpQ461OeBpeZODkRkU0jPga_IeeGMEt/view?usp=sharing"
+      },
+      {
+        "title": "Eu Me Rendo",
+        "url": "https://drive.google.com/file/d/1XEz4rQG8NlHJnIrB5ZNcynqgKxjewdmb/view?usp=sharing"
+      }
+    ]
+  }
+}
