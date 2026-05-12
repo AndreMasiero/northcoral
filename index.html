@@ -267,7 +267,7 @@
 
         .player-iframe {
             width: 100%;
-            height: 80px;
+            height: 120px;
             border: none;
             border-radius: 12px;
             background: #1a1a1a;
@@ -412,6 +412,8 @@
         }
 
         function getEmbedUrl(url) {
+            // Detecta URL de pasta (nao funciona para audio)
+            if (url.includes('/drive/folders/')) return null;
             // https://drive.google.com/file/d/FILE_ID/view?...
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
             if (fileMatch) return `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
@@ -424,9 +426,27 @@
         function playTrack(song) {
             const embedUrl = getEmbedUrl(song.url);
             if (!embedUrl) {
-                window.open(song.url, '_blank');
+                // URL de pasta: nao tem como tocar diretamente
+                document.getElementById('player-title').textContent = song.title;
+                document.getElementById('player-iframe').src = '';
+                const panel = document.getElementById('player-panel');
+                panel.classList.add('open');
+                document.getElementById('player-iframe').style.display = 'none';
+                let warn = document.getElementById('player-warn');
+                if (!warn) {
+                    warn = document.createElement('p');
+                    warn.id = 'player-warn';
+                    warn.style.cssText = 'color: var(--text-secondary); font-size: 13px; text-align: center; padding: 12px 0;';
+                    panel.appendChild(warn);
+                }
+                warn.style.display = 'block';
+                warn.textContent = '⚠️ Use o link do arquivo MP3 (não da pasta) no data-playback.json';
                 return;
             }
+            // Esconde aviso anterior
+            const warn = document.getElementById('player-warn');
+            if (warn) warn.style.display = 'none';
+            document.getElementById('player-iframe').style.display = 'block';
             document.getElementById('player-title').textContent = song.title;
             document.getElementById('player-iframe').src = embedUrl;
             document.getElementById('player-panel').classList.add('open');
