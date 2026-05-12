@@ -70,12 +70,10 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(
-                180deg,
-                rgba(5, 5, 9, 0.3) 0%,
-                rgba(5, 5, 9, 0.6) 40%,
-                rgba(5, 5, 9, 0.85) 100%
-            );
+            background: linear-gradient(180deg,
+                    rgba(5, 5, 9, 0.3) 0%,
+                    rgba(5, 5, 9, 0.6) 40%,
+                    rgba(5, 5, 9, 0.85) 100%);
             z-index: 0;
             pointer-events: none;
         }
@@ -87,7 +85,7 @@
             width: 100%;
             max-width: 440px;
             min-height: 100vh;
-            padding: 220px 20px 120px;
+            padding: 250px 20px 120px;
             display: flex;
             flex-direction: column;
             margin: 0 auto;
@@ -116,10 +114,9 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg,
-                transparent,
-                rgba(167, 139, 250, 0.4),
-                transparent
-            );
+                    transparent,
+                    rgba(167, 139, 250, 0.4),
+                    transparent);
         }
 
         .alert-card p {
@@ -242,7 +239,9 @@
         }
 
         /* ── Stagger animation for list items ── */
-        .btn.stagger { animation: cardIn 0.5s var(--ease-out) both; }
+        .btn.stagger {
+            animation: cardIn 0.5s var(--ease-out) both;
+        }
 
         /* ── Divider ── */
         .divider {
@@ -255,9 +254,8 @@
         /* ── Playback Button ── */
         .btn-playback {
             background: linear-gradient(135deg,
-                rgba(167, 139, 250, 0.08),
-                rgba(129, 140, 248, 0.04)
-            );
+                    rgba(167, 139, 250, 0.08),
+                    rgba(129, 140, 248, 0.04));
             border-color: rgba(167, 139, 250, 0.15);
         }
 
@@ -368,10 +366,9 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg,
-                transparent,
-                rgba(167, 139, 250, 0.5),
-                transparent
-            );
+                    transparent,
+                    rgba(167, 139, 250, 0.5),
+                    transparent);
         }
 
         .player-panel.open {
@@ -453,6 +450,7 @@
                 opacity: 0;
                 transform: translateY(-12px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -464,6 +462,7 @@
                 opacity: 0;
                 transform: translateY(16px) scale(0.97);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -475,6 +474,7 @@
                 opacity: 0;
                 transform: translateX(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -482,25 +482,49 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         @keyframes playerDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.7); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
         }
 
         /* ═══════════════════════════════════════════
            RESPONSIVE FINE-TUNING
            ═══════════════════════════════════════════ */
         @media (max-width: 380px) {
-            .container { padding-top: 180px; }
-            .alert-card strong { font-size: 18px; }
+            .container {
+                padding-top: 240px;
+            }
+
+            .alert-card strong {
+                font-size: 18px;
+            }
         }
 
         @media (min-width: 480px) {
-            .container { padding-left: 28px; padding-right: 28px; }
+            .container {
+                padding-left: 28px;
+                padding-right: 28px;
+            }
         }
 
         /* ═══════════════════════════════════════════
@@ -523,31 +547,94 @@
             filter: blur(0.5px);
         }
 
-        .note:nth-child(1)  { left: 8%;   font-size: 28px; animation-duration: 22s; animation-delay: 0s;    }
-        .note:nth-child(2)  { left: 22%;  font-size: 24px; animation-duration: 18s; animation-delay: 3s;    }
-        .note:nth-child(3)  { left: 38%;  font-size: 36px; animation-duration: 25s; animation-delay: 7s;    }
-        .note:nth-child(4)  { left: 55%;  font-size: 22px; animation-duration: 20s; animation-delay: 2s;    }
-        .note:nth-child(5)  { left: 72%;  font-size: 32px; animation-duration: 23s; animation-delay: 5s;    }
-        .note:nth-child(6)  { left: 88%;  font-size: 26px; animation-duration: 19s; animation-delay: 9s;    }
-        .note:nth-child(7)  { left: 15%;  font-size: 22px; animation-duration: 26s; animation-delay: 12s;   }
-        .note:nth-child(8)  { left: 45%;  font-size: 30px; animation-duration: 21s; animation-delay: 6s;    }
-        .note:nth-child(9)  { left: 65%;  font-size: 20px; animation-duration: 24s; animation-delay: 14s;   }
-        .note:nth-child(10) { left: 82%;  font-size: 34px; animation-duration: 17s; animation-delay: 1s;    }
+        .note:nth-child(1) {
+            left: 8%;
+            font-size: 28px;
+            animation-duration: 22s;
+            animation-delay: 0s;
+        }
+
+        .note:nth-child(2) {
+            left: 22%;
+            font-size: 24px;
+            animation-duration: 18s;
+            animation-delay: 3s;
+        }
+
+        .note:nth-child(3) {
+            left: 38%;
+            font-size: 36px;
+            animation-duration: 25s;
+            animation-delay: 7s;
+        }
+
+        .note:nth-child(4) {
+            left: 55%;
+            font-size: 22px;
+            animation-duration: 20s;
+            animation-delay: 2s;
+        }
+
+        .note:nth-child(5) {
+            left: 72%;
+            font-size: 32px;
+            animation-duration: 23s;
+            animation-delay: 5s;
+        }
+
+        .note:nth-child(6) {
+            left: 88%;
+            font-size: 26px;
+            animation-duration: 19s;
+            animation-delay: 9s;
+        }
+
+        .note:nth-child(7) {
+            left: 15%;
+            font-size: 22px;
+            animation-duration: 26s;
+            animation-delay: 12s;
+        }
+
+        .note:nth-child(8) {
+            left: 45%;
+            font-size: 30px;
+            animation-duration: 21s;
+            animation-delay: 6s;
+        }
+
+        .note:nth-child(9) {
+            left: 65%;
+            font-size: 20px;
+            animation-duration: 24s;
+            animation-delay: 14s;
+        }
+
+        .note:nth-child(10) {
+            left: 82%;
+            font-size: 34px;
+            animation-duration: 17s;
+            animation-delay: 1s;
+        }
 
         @keyframes floatUp {
             0% {
                 transform: translateY(0) translateX(0) rotate(0deg);
                 opacity: 0;
             }
+
             10% {
                 opacity: 0.22;
             }
+
             50% {
                 opacity: 0.28;
             }
+
             90% {
                 opacity: 0.18;
             }
+
             100% {
                 transform: translateY(-110vh) translateX(30px) rotate(45deg);
                 opacity: 0;
@@ -556,12 +643,17 @@
 
         /* Reduz para menos notas em telas pequenas */
         @media (max-width: 380px) {
-            .note:nth-child(n+7) { display: none; }
+            .note:nth-child(n+7) {
+                display: none;
+            }
         }
 
         /* Respeita prefer-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
-            .note { animation: none !important; display: none; }
+            .note {
+                animation: none !important;
+                display: none;
+            }
         }
     </style>
 </head>
@@ -607,7 +699,11 @@
         <!-- NAIPE SONGS -->
         <main id="view-songs" class="view">
             <button class="back-btn" onclick="goHome()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M19 12H5" />
+                    <path d="M12 19l-7-7 7-7" />
+                </svg>
                 Trocar Naipe
             </button>
             <h2 class="section-title">
@@ -619,7 +715,11 @@
         <!-- PLAYBACK -->
         <main id="view-playback" class="view">
             <button class="back-btn" onclick="goHome()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M19 12H5" />
+                    <path d="M12 19l-7-7 7-7" />
+                </svg>
                 Voltar
             </button>
             <h2 class="section-title">
