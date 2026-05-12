@@ -202,6 +202,76 @@
                 transform: translateY(0);
             }
         }
+
+        /* Player Panel */
+        .player-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 15, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 20px 36px;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 200;
+        }
+
+        .player-panel.open {
+            transform: translateY(0);
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .player-now {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .player-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .player-close {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .player-close:active {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .player-iframe {
+            width: 100%;
+            height: 80px;
+            border: none;
+            border-radius: 12px;
+            background: #1a1a1a;
+        }
     </style>
 </head>
 
@@ -243,6 +313,18 @@
             <h2 class="section-title">🎶 Play Back</h2>
             <div id="playback-list"></div>
         </main>
+
+        <!-- Player de Áudio -->
+        <div class="player-panel" id="player-panel">
+            <div class="player-header">
+                <div>
+                    <p class="player-now">▶ Tocando agora</p>
+                    <p class="player-title" id="player-title"></p>
+                </div>
+                <button class="player-close" onclick="closePlayer()">✕</button>
+            </div>
+            <iframe class="player-iframe" id="player-iframe" src="" allow="autoplay"></iframe>
+        </div>
     </div>
 
     <script>
@@ -317,12 +399,11 @@
 
                 playbackList.innerHTML = '';
                 pbData.playback.forEach(song => {
-                    const a = document.createElement('a');
-                    a.href = song.url;
-                    a.className = 'btn';
-                    a.target = '_blank';
-                    a.innerHTML = `🎶 ${song.title} <span class="btn-icon">↗</span>`;
-                    playbackList.appendChild(a);
+                    const btn = document.createElement('button');
+                    btn.className = 'btn';
+                    btn.innerHTML = `🎶 ${song.title} <span class="btn-icon">▶</span>`;
+                    btn.onclick = () => playTrack(song);
+                    playbackList.appendChild(btn);
                 });
             } catch (e) {
                 console.error('Erro ao carregar playback:', e);
@@ -330,8 +411,35 @@
             }
         }
 
+        function getEmbedUrl(url) {
+            // https://drive.google.com/file/d/FILE_ID/view?...
+            const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (fileMatch) return `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
+            // https://drive.google.com/uc?id=FILE_ID
+            const ucMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (ucMatch) return `https://drive.google.com/file/d/${ucMatch[1]}/preview`;
+            return null;
+        }
+
+        function playTrack(song) {
+            const embedUrl = getEmbedUrl(song.url);
+            if (!embedUrl) {
+                window.open(song.url, '_blank');
+                return;
+            }
+            document.getElementById('player-title').textContent = song.title;
+            document.getElementById('player-iframe').src = embedUrl;
+            document.getElementById('player-panel').classList.add('open');
+        }
+
+        function closePlayer() {
+            document.getElementById('player-panel').classList.remove('open');
+            setTimeout(() => { document.getElementById('player-iframe').src = ''; }, 350);
+        }
+
         function goHome() {
             localStorage.removeItem('userVoice');
+            closePlayer();
             viewSongs.classList.remove('active');
             viewPlayback.classList.remove('active');
             viewHome.classList.add('active');
