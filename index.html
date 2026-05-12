@@ -127,6 +127,41 @@
             font-size: 20px;
         }
 
+        /* Separador de seção */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0 16px;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .section-divider span {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Botão Play Back com destaque sutil */
+        .btn-playback {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-playback:active {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
         /* Views (Telas) */
         .view {
             display: none;
@@ -183,6 +218,12 @@
             <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">
                 Selecione seu naipe</h2>
             <div id="naipes-list"></div>
+
+            <div class="section-divider"><span>Playback</span></div>
+
+            <button class="btn btn-playback" id="btn-playback" onclick="openPlayback()">
+                🎶 Play Back <span class="btn-icon">›</span>
+            </button>
         </main>
 
         <main id="view-songs" class="view">
@@ -194,16 +235,27 @@
             <div id="songs-list">
             </div>
         </main>
+
+        <main id="view-playback" class="view">
+            <button class="back-btn" onclick="goHome()">
+                <span>‹‹‹‹‹</span> Voltar
+            </button>
+            <h2 class="section-title">🎶 Play Back</h2>
+            <div id="playback-list"></div>
+        </main>
     </div>
 
     <script>
         const DATA_URL = 'https://api.github.com/repos/AndreMasiero/northcoral/contents/data.json';
+        const PLAYBACK_URL = 'https://raw.githubusercontent.com/AndreMasiero/northcoral/main/data-playback.json';
 
         const viewHome = document.getElementById('view-home');
         const viewSongs = document.getElementById('view-songs');
+        const viewPlayback = document.getElementById('view-playback');
         const songsList = document.getElementById('songs-list');
         const voiceTitle = document.getElementById('voice-title');
         const naipesList = document.getElementById('naipes-list');
+        const playbackList = document.getElementById('playback-list');
 
         const naipeLabels = {
             soprano: 'Soprano',
@@ -251,12 +303,37 @@
             });
 
             viewHome.classList.remove('active');
+            viewPlayback.classList.remove('active');
             viewSongs.classList.add('active');
+        }
+
+        async function openPlayback() {
+            playbackList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Carregando...</p>';
+            viewHome.classList.remove('active');
+            viewPlayback.classList.add('active');
+
+            try {
+                const pbData = await fetch(PLAYBACK_URL, { cache: 'no-store' }).then(r => r.json());
+
+                playbackList.innerHTML = '';
+                pbData.playback.forEach(song => {
+                    const a = document.createElement('a');
+                    a.href = song.url;
+                    a.className = 'btn';
+                    a.target = '_blank';
+                    a.innerHTML = `🎶 ${song.title} <span class="btn-icon">↗</span>`;
+                    playbackList.appendChild(a);
+                });
+            } catch (e) {
+                console.error('Erro ao carregar playback:', e);
+                playbackList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Erro ao carregar play back.</p>';
+            }
         }
 
         function goHome() {
             localStorage.removeItem('userVoice');
             viewSongs.classList.remove('active');
+            viewPlayback.classList.remove('active');
             viewHome.classList.add('active');
         }
 
