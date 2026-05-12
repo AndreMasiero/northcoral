@@ -5,218 +5,373 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>North Coral</title>
+    <meta name="description" content="North Coral — Aplicativo oficial do coral para ensaio de naipes e playback.">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#050509">
     <link rel="apple-touch-icon" href="/img/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Estética Minimalista All-Black */
+        /* ═══════════════════════════════════════════
+           DESIGN SYSTEM — North Coral Premium
+           ═══════════════════════════════════════════ */
         :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #171717;
-            --border-color: #2a2a2a;
-            --text-primary: #ededed;
-            --text-secondary: #a0a0a0;
-            --accent: #ffffff;
+            --bg: #050509;
+            --surface: rgba(255, 255, 255, 0.04);
+            --surface-hover: rgba(255, 255, 255, 0.07);
+            --surface-active: rgba(255, 255, 255, 0.1);
+            --glass: rgba(12, 12, 18, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-hover: rgba(255, 255, 255, 0.14);
+            --text-1: #f0f0f5;
+            --text-2: rgba(240, 240, 245, 0.55);
+            --text-3: rgba(240, 240, 245, 0.3);
+            --accent-1: #a78bfa;
+            --accent-2: #818cf8;
+            --accent-glow: rgba(167, 139, 250, 0.15);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-full: 9999px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background-color: var(--bg-color);
-            /* Mantém a cor escura como fallback */
-
-            /* Adicione estas linhas abaixo para o background: */
-            background-image: url('./img/bg.png');
-            background-size: cover;
-            /* Faz a imagem cobrir a tela toda */
-            background-position: center;
-            /* Centraliza a imagem */
-            background-attachment: fixed;
-            /* Deixa o fundo parado enquanto a tela rola */
-
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
+        html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* No seu arquivo CSS */
-
-        .container {
-            width: 120%;
-            max-width: 480px;
+        body {
+            background-color: var(--bg);
+            background-image: url('./img/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-1);
+            display: flex;
+            justify-content: center;
             min-height: 100vh;
-            /* Aumente o padding superior para empurrar o conteúdo para baixo */
-            padding: 240px 20px 24px 20px;
-            /* Valor alterado de 24px para 140px */
+            overflow-x: hidden;
+        }
+
+        /* Overlay escuro sobre o background para melhor contraste */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(5, 5, 9, 0.3) 0%,
+                rgba(5, 5, 9, 0.6) 40%,
+                rgba(5, 5, 9, 0.85) 100%
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Container ── */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            min-height: 100vh;
+            padding: 220px 20px 120px;
             display: flex;
             flex-direction: column;
-            /* Garante que o padding não afete a largura total */
-            box-sizing: border-box;
-            /* Opcional: se quiser centralizar o conteúdo na tela */
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        /* Card de Aviso */
+        /* ── Alert Card ── */
         .alert-card {
-            background-color: rgba(23, 23, 23, 0.8);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
+            background: var(--glass);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.6s var(--ease-out) both;
+        }
+
+        .alert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(167, 139, 250, 0.4),
+                transparent
+            );
         }
 
         .alert-card p {
-            font-size: 24px;
-            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: var(--text-2);
+            text-transform: uppercase;
         }
 
         .alert-card strong {
             display: block;
-            color: var(--accent);
-            font-size: 34px;
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 8px;
+            letter-spacing: 0.3px;
         }
 
-        /* Botões e Links */
+        /* ── Section Label ── */
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-3);
+            text-align: center;
+            margin-bottom: 16px;
+            animation: slideDown 0.5s var(--ease-out) 0.15s both;
+        }
+
+        /* ── Buttons / Cards ── */
         .btn {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             width: 100%;
-            background-color: rgba(23, 23, 23, 0.8);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 26px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-1);
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 16px;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.2s var(--ease-spring),
+                box-shadow 0.25s ease;
             text-decoration: none;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-glow), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            background: var(--surface-hover);
+            border-color: var(--glass-border-hover);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
         }
 
         .btn:active {
-            background-color: #222;
-            transform: scale(0.98);
+            transform: scale(0.97);
+            background: var(--surface-active);
         }
 
-        .btn-icon {
-            opacity: 0.5;
-            font-size: 20px;
-        }
-
-        /* Separador de seção */
-        .section-divider {
+        .btn-emoji {
+            font-size: 22px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 24px 0 16px;
+            justify-content: center;
+            background: var(--surface);
+            border-radius: var(--radius-sm);
         }
 
-        .section-divider::before,
-        .section-divider::after {
-            content: '';
+        .btn-text {
             flex: 1;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-arrow {
+            color: var(--text-3);
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.25s var(--ease-out), color 0.25s ease;
+        }
+
+        .btn:hover .btn-arrow {
+            transform: translateX(3px);
+            color: var(--accent-1);
+        }
+
+        /* ── Stagger animation for list items ── */
+        .btn.stagger { animation: cardIn 0.5s var(--ease-out) both; }
+
+        /* ── Divider ── */
+        .divider {
             height: 1px;
-            background: var(--border-color);
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+            margin: 20px 0;
+            animation: slideDown 0.5s var(--ease-out) 0.3s both;
         }
 
-        .section-divider span {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-
-        /* Botão Play Back com destaque sutil */
+        /* ── Playback Button ── */
         .btn-playback {
-            background-color: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.12);
+            background: linear-gradient(135deg,
+                rgba(167, 139, 250, 0.08),
+                rgba(129, 140, 248, 0.04)
+            );
+            border-color: rgba(167, 139, 250, 0.15);
         }
 
-        .btn-playback:active {
-            background-color: rgba(255, 255, 255, 0.08);
+        .btn-playback:hover {
+            border-color: rgba(167, 139, 250, 0.3);
+            box-shadow: 0 4px 32px var(--accent-glow);
         }
 
-        /* Views (Telas) */
+        .btn-playback .btn-emoji {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(129, 140, 248, 0.1));
+        }
+
+        /* ── Views ── */
         .view {
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
         .view.active {
             display: block;
+            animation: viewIn 0.45s var(--ease-out) both;
         }
 
+        /* ── Back Button ── */
         .back-btn {
             background: none;
             border: none;
-            color: var(--text-secondary);
-            font-size: 26px;
+            color: var(--text-2);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            padding: 8px 0;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease, transform 0.2s var(--ease-out);
+        }
+
+        .back-btn:hover {
+            color: var(--text-1);
+        }
+
+        .back-btn:active {
+            transform: translateX(-3px);
+        }
+
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.2s var(--ease-out);
+        }
+
+        .back-btn:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* ── Section Title ── */
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--accent);
+        .section-title-text {
+            background: linear-gradient(135deg, var(--text-1), var(--text-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* ── Loading Skeleton ── */
+        .loading-text {
+            color: var(--text-2);
+            text-align: center;
+            padding: 32px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
-        /* Player Panel */
+        /* ═══════════════════════════════════════════
+           PLAYER PANEL
+           ═══════════════════════════════════════════ */
         .player-panel {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 15, 15, 0.97);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px 20px 36px;
+            background: rgba(10, 10, 16, 0.95);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-top: 1px solid rgba(167, 139, 250, 0.15);
+            padding: 20px 24px calc(20px + env(safe-area-inset-bottom, 12px));
             transform: translateY(100%);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s var(--ease-out);
             z-index: 200;
+        }
+
+        .player-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(167, 139, 250, 0.5),
+                transparent
+            );
         }
 
         .player-panel.open {
@@ -227,98 +382,260 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .player-now {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--text-secondary);
+            color: var(--accent-1);
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .player-now-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-1);
+            animation: playerDot 1.4s ease-in-out infinite;
         }
 
         .player-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--text-1);
         }
 
         .player-close {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: var(--text-secondary);
-            font-size: 20px;
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            color: var(--text-2);
+            font-size: 16px;
             cursor: pointer;
             width: 36px;
             height: 36px;
-            border-radius: 50%;
+            border-radius: var(--radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: background 0.2s;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            font-family: inherit;
+        }
+
+        .player-close:hover {
+            background: var(--surface-hover);
+            border-color: var(--glass-border-hover);
         }
 
         .player-close:active {
-            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.9);
         }
 
         .player-iframe {
             width: 100%;
             height: 120px;
             border: none;
-            border-radius: 12px;
-            background: #1a1a1a;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* ═══════════════════════════════════════════
+           ANIMATIONS
+           ═══════════════════════════════════════════ */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes viewIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes playerDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE FINE-TUNING
+           ═══════════════════════════════════════════ */
+        @media (max-width: 380px) {
+            .container { padding-top: 180px; }
+            .alert-card strong { font-size: 18px; }
+        }
+
+        @media (min-width: 480px) {
+            .container { padding-left: 28px; padding-right: 28px; }
+        }
+
+        /* ═══════════════════════════════════════════
+           FLOATING MUSIC NOTES
+           ═══════════════════════════════════════════ */
+        .floating-notes {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .note {
+            position: absolute;
+            bottom: -40px;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatUp linear infinite;
+            filter: blur(0.5px);
+        }
+
+        .note:nth-child(1)  { left: 8%;   font-size: 28px; animation-duration: 22s; animation-delay: 0s;    }
+        .note:nth-child(2)  { left: 22%;  font-size: 24px; animation-duration: 18s; animation-delay: 3s;    }
+        .note:nth-child(3)  { left: 38%;  font-size: 36px; animation-duration: 25s; animation-delay: 7s;    }
+        .note:nth-child(4)  { left: 55%;  font-size: 22px; animation-duration: 20s; animation-delay: 2s;    }
+        .note:nth-child(5)  { left: 72%;  font-size: 32px; animation-duration: 23s; animation-delay: 5s;    }
+        .note:nth-child(6)  { left: 88%;  font-size: 26px; animation-duration: 19s; animation-delay: 9s;    }
+        .note:nth-child(7)  { left: 15%;  font-size: 22px; animation-duration: 26s; animation-delay: 12s;   }
+        .note:nth-child(8)  { left: 45%;  font-size: 30px; animation-duration: 21s; animation-delay: 6s;    }
+        .note:nth-child(9)  { left: 65%;  font-size: 20px; animation-duration: 24s; animation-delay: 14s;   }
+        .note:nth-child(10) { left: 82%;  font-size: 34px; animation-duration: 17s; animation-delay: 1s;    }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.22;
+            }
+            50% {
+                opacity: 0.28;
+            }
+            90% {
+                opacity: 0.18;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(30px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Reduz para menos notas em telas pequenas */
+        @media (max-width: 380px) {
+            .note:nth-child(n+7) { display: none; }
+        }
+
+        /* Respeita prefer-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .note { animation: none !important; display: none; }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- Floating Notes -->
+    <div class="floating-notes" aria-hidden="true">
+        <span class="note">♪</span>
+        <span class="note">♫</span>
+        <span class="note">♩</span>
+        <span class="note">♬</span>
+        <span class="note">♪</span>
+        <span class="note">♫</span>
+        <span class="note">♩</span>
+        <span class="note">♬</span>
+        <span class="note">♪</span>
+        <span class="note">♫</span>
+    </div>
+
     <div class="container">
 
+        <!-- Alert Card -->
         <div class="alert-card" id="alert-card">
             <p id="alert-text"></p>
             <strong id="alert-songs"></strong>
         </div>
 
+        <!-- HOME -->
         <main id="view-home" class="view active">
-            <h2 class="section-title" style="font-size: 16px; color: var(--text-secondary); text-align: center;">
-                Selecione seu naipe</h2>
+            <p class="section-label">Selecione seu naipe</p>
             <div id="naipes-list"></div>
 
-            <div class="section-divider"></div>
+            <div class="divider"></div>
 
             <button class="btn btn-playback" id="btn-playback" onclick="openPlayback()">
-                🎶 Play Back <span class="btn-icon">›</span>
+                <span class="btn-emoji">🎶</span>
+                <span class="btn-text">Play Back</span>
+                <span class="btn-arrow">›</span>
             </button>
         </main>
 
+        <!-- NAIPE SONGS -->
         <main id="view-songs" class="view">
             <button class="back-btn" onclick="goHome()">
-                <span>‹‹‹‹‹</span> Trocar Naipe
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Trocar Naipe
             </button>
-            <h2 id="voice-title" class="section-title">Naipe</h2>
-
-            <div id="songs-list">
-            </div>
+            <h2 class="section-title">
+                <span id="voice-title" class="section-title-text">Naipe</span>
+            </h2>
+            <div id="songs-list"></div>
         </main>
 
+        <!-- PLAYBACK -->
         <main id="view-playback" class="view">
             <button class="back-btn" onclick="goHome()">
-                <span>‹‹‹‹‹</span> Voltar
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Voltar
             </button>
-            <h2 class="section-title">🎶 Play Back</h2>
+            <h2 class="section-title">
+                <span class="section-title-text">Play Back</span>
+            </h2>
             <div id="playback-list"></div>
         </main>
 
-        <!-- Player de Áudio -->
+        <!-- Audio Player -->
         <div class="player-panel" id="player-panel">
             <div class="player-header">
                 <div>
-                    <p class="player-now">▶ Tocando agora</p>
+                    <p class="player-now">
+                        <span class="player-now-dot"></span>
+                        Tocando agora
+                    </p>
                     <p class="player-title" id="player-title"></p>
                 </div>
                 <button class="player-close" onclick="closePlayer()">✕</button>
@@ -346,6 +663,37 @@
             baritono: 'Barítono'
         };
 
+        const naipeEmojis = {
+            soprano: '🎤',
+            contralto: '🎙️',
+            tenor: '🎵',
+            baritono: '🎶'
+        };
+
+        function createBtn(emoji, text, arrowText, delay) {
+            const btn = document.createElement('button');
+            btn.className = 'btn stagger';
+            btn.style.animationDelay = `${delay}s`;
+            btn.innerHTML = `
+                <span class="btn-emoji">${emoji}</span>
+                <span class="btn-text">${text}</span>
+                <span class="btn-arrow">${arrowText}</span>`;
+            return btn;
+        }
+
+        function createLink(emoji, text, arrowText, href, delay) {
+            const a = document.createElement('a');
+            a.href = href;
+            a.target = '_blank';
+            a.className = 'btn stagger';
+            a.style.animationDelay = `${delay}s`;
+            a.innerHTML = `
+                <span class="btn-emoji">${emoji}</span>
+                <span class="btn-text">${text}</span>
+                <span class="btn-arrow">${arrowText}</span>`;
+            return a;
+        }
+
         async function init() {
             const meta = await fetch(DATA_URL, { cache: 'no-store' }).then(r => r.json());
             const appData = JSON.parse(decodeURIComponent(escape(atob(meta.content))));
@@ -354,11 +702,10 @@
             document.getElementById('alert-songs').textContent = appData.musica_para_ensaiar;
 
             naipesList.innerHTML = '';
-            Object.keys(appData.naipes).forEach(key => {
+            Object.keys(appData.naipes).forEach((key, i) => {
                 const label = naipeLabels[key] || key.charAt(0).toUpperCase() + key.slice(1);
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.innerHTML = `${label} <span class="btn-icon">›</span>`;
+                const emoji = naipeEmojis[key] || '🎵';
+                const btn = createBtn(emoji, label, '›', 0.2 + i * 0.07);
                 btn.onclick = () => selectVoice(appData, key);
                 naipesList.appendChild(btn);
             });
@@ -375,12 +722,8 @@
             voiceTitle.textContent = label;
 
             songsList.innerHTML = '';
-            appData.naipes[voiceKey].forEach(song => {
-                const a = document.createElement('a');
-                a.href = song.url;
-                a.className = 'btn';
-                a.target = '_blank';
-                a.innerHTML = `🎵 ${song.title} <span class="btn-icon">↗</span>`;
+            appData.naipes[voiceKey].forEach((song, i) => {
+                const a = createLink('🎵', song.title, '↗', song.url, 0.05 + i * 0.06);
                 songsList.appendChild(a);
             });
 
@@ -390,7 +733,7 @@
         }
 
         async function openPlayback() {
-            playbackList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Carregando...</p>';
+            playbackList.innerHTML = '<p class="loading-text">Carregando...</p>';
             viewHome.classList.remove('active');
             viewPlayback.classList.add('active');
 
@@ -398,16 +741,14 @@
                 const pbData = await fetch(PLAYBACK_URL, { cache: 'no-store' }).then(r => r.json());
 
                 playbackList.innerHTML = '';
-                pbData.playback.forEach(song => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn';
-                    btn.innerHTML = `🎶 ${song.title} <span class="btn-icon">▶</span>`;
+                pbData.playback.forEach((song, i) => {
+                    const btn = createBtn('🎶', song.title, '▶', 0.05 + i * 0.06);
                     btn.onclick = () => playTrack(song);
                     playbackList.appendChild(btn);
                 });
             } catch (e) {
                 console.error('Erro ao carregar playback:', e);
-                playbackList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Erro ao carregar play back.</p>';
+                playbackList.innerHTML = '<p class="loading-text" style="animation:none;opacity:0.6">Erro ao carregar play back.</p>';
             }
         }
 
@@ -436,7 +777,7 @@
                 if (!warn) {
                     warn = document.createElement('p');
                     warn.id = 'player-warn';
-                    warn.style.cssText = 'color: var(--text-secondary); font-size: 13px; text-align: center; padding: 12px 0;';
+                    warn.style.cssText = 'color: var(--text-2); font-size: 13px; text-align: center; padding: 12px 0;';
                     panel.appendChild(warn);
                 }
                 warn.style.display = 'block';
@@ -454,7 +795,7 @@
 
         function closePlayer() {
             document.getElementById('player-panel').classList.remove('open');
-            setTimeout(() => { document.getElementById('player-iframe').src = ''; }, 350);
+            setTimeout(() => { document.getElementById('player-iframe').src = ''; }, 400);
         }
 
         function goHome() {
